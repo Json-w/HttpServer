@@ -10,7 +10,7 @@ public class Response {
 	private final String CRLF = System.lineSeparator();
 	private final String BLANCK = " ";
 	private StringBuilder header;
-	private String content;
+	private String content="";
 	private String result;
 	private int status;
 	private BufferedWriter bw;
@@ -19,9 +19,8 @@ public class Response {
 		header = new StringBuilder();
 	}
 
-	public Response(int status, Socket socket) {
+	public Response(Socket socket) {
 		this();
-		this.status = status;
 		try {
 			bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 		} catch (IOException e) {
@@ -35,10 +34,12 @@ public class Response {
 		this.content = content;
 	}
 
-	public void pushToClient() {
+	public void pushToClient(int status) {
 		try {
 			if (null == header) {
 				this.status = 500;
+			} else {
+				this.status = status;
 			}
 			createResponseHead(content.getBytes().length);
 			result = header + content;

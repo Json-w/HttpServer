@@ -9,8 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.sun.xml.internal.messaging.saaj.soap.StringDataContentHandler;
-
 public class Request {
 	private static final String CRLF = System.lineSeparator();
 	private String method;
@@ -81,6 +79,7 @@ public class Request {
 
 	/**
 	 * 参数转化成map
+	 * 
 	 * @param params
 	 */
 	private void paramsToMap(String params) {
@@ -99,4 +98,29 @@ public class Request {
 			}
 		}
 	}
+
+	public String getParameter(String name) {
+		List<String> list = parameters.get(name);
+		if (null == list) {
+			return null;
+		}
+		if (list.size() == 1) {
+			return list.get(0);
+		}
+		String result = "";
+		for (String s : list) {
+			result += s + ",";
+		}
+		result.substring(0, result.lastIndexOf(","));
+		return result;
+	}
+
+	public String getMethod() {
+		return method;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
 }
